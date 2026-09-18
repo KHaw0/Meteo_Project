@@ -1,5 +1,3 @@
-import java.awt.Color;
-
 import javax.swing.*;
 
 public class Display extends JFrame{
@@ -8,13 +6,16 @@ public class Display extends JFrame{
         setSize(500, 500);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(null);
-        setBackground(Color.BLACK);
         
     }
 
     public static void main(String[] args) {
         Display display = new Display();
+        PaintBg paint = new PaintBg();
+
+        paint.setBounds(0, 0, 500, 500);
         
+        display.add(paint);
         display.setVisible(true);
     }
 }
