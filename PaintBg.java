@@ -5,7 +5,7 @@ public class PaintBg extends JLabel{
 
     PaintBg() {
         setBackground(Color.BLACK);
-        
+        setOpaque(true);
     }
 
     @Override
