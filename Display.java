@@ -1,21 +1,19 @@
 import javax.swing.*;
 
-public class Display extends JFrame{
+public class Display extends JFrame{    
 
     Display() {
-        setSize(500, 500);
+        setSize(600, 600);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(null);
-        
     }
 
     public static void main(String[] args) {
         Display display = new Display();
-        PaintBg paint = new PaintBg();
+        PaintBg paint = new PaintBg(display);
 
-        paint.setBounds(0, 0, 500, 500);
+        paint.setBounds(0, 0, 600, 600);
         
         display.add(paint);
-        display.setVisible(true);
     }
 }
