@@ -1,14 +1,13 @@
 public class MeteorMove extends Thread {
     private PaintBg bg;
-    private int posX, posY;
+    private int id;
+    private int speed;
 
-    MeteorMove(PaintBg bg, int x, int y) {
+    public MeteorMove(PaintBg bg, int id) {
         this.bg = bg;
-        this.posX = x;
-        this.posY = y;
+        this.id = id;
     }
 
     public void run() {
-
     }
 }

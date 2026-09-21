@@ -38,6 +38,12 @@ public class PaintBg extends JLabel {
             meteor = new Image[n];
             posX = new int[n];
             posY = new int[n];
+
+            for (int i = 0; i < n; i++) {
+                posX[i] = new Random().nextInt(0, 500);
+                posY[i] = new Random().nextInt(0, 500);
+            }
+
             loadMeteor();
             loadBomb();
             isReady = !isReady;
@@ -45,11 +51,6 @@ public class PaintBg extends JLabel {
             frameCount.setVisible(!isReady);
             display.setVisible(isReady);
         });
-
-        for (int i = 0; i < n; i++) {
-            posX[i] = new Random().nextInt(0, 500);
-            posY[i] = new Random().nextInt(0, 500);
-        }
 
         setOpaque(true);
         bg = new ImageIcon(getClass().getResource("/Image/background.png")).getImage();
@@ -87,7 +88,7 @@ public class PaintBg extends JLabel {
         g.drawImage(bg, 0, 0, 600, 600, this);
 
         for (int i = 0; i < meteor.length; i++) {
-            g.drawImage(meteor[i], new Random().nextInt(0, 500), new Random().nextInt(0, 500), 75, 75, this);
+            g.drawImage(meteor[i], posX[i], posY[i], 75, 75, this);
         }
 
     }
