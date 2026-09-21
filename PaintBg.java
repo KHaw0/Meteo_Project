@@ -8,6 +8,9 @@ public class PaintBg extends JLabel {
     private int n;
     private Image bg;
     private Image[] meteor;
+    private int[] posX;
+    private int[] posY;
+    private Image bomb;
     private JFrame frameCount = new JFrame();
 
     public boolean isReady = false;
@@ -33,18 +36,26 @@ public class PaintBg extends JLabel {
                 return;
             }
             meteor = new Image[n];
+            posX = new int[n];
+            posY = new int[n];
             loadMeteor();
+            loadBomb();
             isReady = !isReady;
 
             frameCount.setVisible(!isReady);
             display.setVisible(isReady);
         });
 
+        for (int i = 0; i < n; i++) {
+            posX[i] = new Random().nextInt(0, 500);
+            posY[i] = new Random().nextInt(0, 500);
+        }
+
         setOpaque(true);
         bg = new ImageIcon(getClass().getResource("/Image/background.png")).getImage();
     }
 
-    public void loadMeteor(){
+    public void loadMeteor() {
         int count = 0;
         for (int i = 0; i < meteor.length; i++) {
             String path = "";
@@ -53,12 +64,20 @@ public class PaintBg extends JLabel {
                 path = "/Image/meteor1.png";
             else if (count == 2)
                 path = "/Image/meteor2.png";
-            else {
+            else if (count == 3)
                 path = "/Image/meteor3.png";
+            else if (count == 4)
+                path = "/Image/meteor4.png";
+            else {
+                path = "/Image/meteor5.png";
                 count = 0;
             }
             meteor[i] = new ImageIcon(getClass().getResource(path)).getImage();
         }
+    }
+
+    public void loadBomb() {
+        bomb = new ImageIcon(getClass().getResource("/Image/boom.png")).getImage();
     }
 
     @Override
@@ -70,5 +89,6 @@ public class PaintBg extends JLabel {
         for (int i = 0; i < meteor.length; i++) {
             g.drawImage(meteor[i], new Random().nextInt(0, 500), new Random().nextInt(0, 500), 75, 75, this);
         }
+
     }
 }
