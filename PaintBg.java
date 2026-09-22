@@ -4,13 +4,14 @@ import javax.swing.*;
 
 public class PaintBg extends JLabel {
 
+    Random rn = new Random();
     private Display display;
     private int n;
     private Image bg;
     private Image[] meteor;
     private int[] posX;
     private int[] posY;
-    private Image bomb;
+    private Image bomb = new ImageIcon(getClass().getResource("boom.png")).getImage();
     private JFrame frameCount = new JFrame();
 
     public boolean isReady = false;
@@ -40,8 +41,8 @@ public class PaintBg extends JLabel {
             posY = new int[n];
 
             for (int i = 0; i < n; i++) {
-                posX[i] = new Random().nextInt(0, 500);
-                posY[i] = new Random().nextInt(0, 500);
+                posX[i] = rn.nextInt(0, 500);
+                posY[i] = rn.nextInt(0, 500);
             }
 
             loadMeteor();
@@ -59,7 +60,7 @@ public class PaintBg extends JLabel {
     public void loadMeteor() {
         
         for (int i = 0; i < meteor.length; i++) {
-            String path = "/Image/meteor" + new Random().nextInt(1, 5) + ".png";
+            String path = "/Image/meteor" + rn.nextInt(1, 5) + ".png";
             meteor[i] = new ImageIcon(getClass().getResource(path)).getImage();
         }
     }
@@ -77,6 +78,5 @@ public class PaintBg extends JLabel {
         for (int i = 0; i < meteor.length; i++) {
             g.drawImage(meteor[i], posX[i], posY[i], 75, 75, this);
         }
-
     }
 }
