@@ -57,22 +57,9 @@ public class PaintBg extends JLabel {
     }
 
     public void loadMeteor() {
-        int count = 0;
+        
         for (int i = 0; i < meteor.length; i++) {
-            String path = "";
-            count++;
-            if (count == 1)
-                path = "/Image/meteor1.png";
-            else if (count == 2)
-                path = "/Image/meteor2.png";
-            else if (count == 3)
-                path = "/Image/meteor3.png";
-            else if (count == 4)
-                path = "/Image/meteor4.png";
-            else {
-                path = "/Image/meteor5.png";
-                count = 0;
-            }
+            String path = "/Image/meteor" + new Random().nextInt(1, 5) + ".png";
             meteor[i] = new ImageIcon(getClass().getResource(path)).getImage();
         }
     }
