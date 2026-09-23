@@ -2,7 +2,7 @@ import java.awt.*;
 import java.util.*;
 import javax.swing.*;
 
-public class PaintBg extends JLabel {
+public class MeteorSystem extends JLabel {
 
     Random rn = new Random();
     private Display display;
@@ -16,7 +16,7 @@ public class PaintBg extends JLabel {
 
     public boolean isReady = false;
 
-    PaintBg(Display display) {
+    MeteorSystem(Display display) {
         this.display = display;
         JLabel lblCount = new JLabel("Meteor Count:");
         JTextField tfCount = new JTextField(25);
