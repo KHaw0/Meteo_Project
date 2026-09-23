@@ -67,8 +67,8 @@ public class MeteorSystem extends JPanel {
         meteorThread = new MeteorLogic[n];
 
         for (int i = 0; i < n; i++) {
-            posX[i] = rn.nextInt(0, 515);
-            posY[i] = rn.nextInt(0, 500);
+            posX[i] = rn.nextInt(0, 535);
+            posY[i] = rn.nextInt(0, 520);
             String path = "/Image/meteor" + rn.nextInt(1, 6) + ".png";
             meteor[i] = new ImageIcon(getClass().getResource(path)).getImage();
             lblMeteor[i] = new JLabel();
@@ -89,7 +89,7 @@ public class MeteorSystem extends JPanel {
         g.drawImage(bg, 0, 0, 600, 600, this);
 
         for (int i = 0; i < meteor.length; i++) {
-            g.drawImage(meteor[i], posX[i], posY[i], 75, 75, lblMeteor[i]);
+            g.drawImage(meteor[i], posX[i], posY[i], 50, 50, lblMeteor[i]);
         }
     }
 
@@ -136,8 +136,8 @@ class MeteorLogic extends Thread {
                 cx = 0;
                 dx = -dx;
                 dx += 1;
-            } else if (cx > 515) {
-                cx = 515;
+            } else if (cx > 535) {
+                cx = 535;
                 dx = -dx;
                 dx -= 1;
             }
@@ -145,8 +145,8 @@ class MeteorLogic extends Thread {
                 cy = 0;
                 dy = -dy;
                 dy += 1;
-            } else if (cy > 500) {
-                cy = 500;
+            } else if (cy > 520) {
+                cy = 520;
                 dy = -dy;
                 dy -= 1;
             }
