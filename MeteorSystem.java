@@ -2,7 +2,7 @@ import java.awt.*;
 import java.util.*;
 import javax.swing.*;
 
-public class MeteorSystem extends JLabel {
+public class MeteorSystem extends JPanel {
 
     Random rn = new Random();
     private Display display;
@@ -11,19 +11,28 @@ public class MeteorSystem extends JLabel {
     private Image[] meteor;
     private int[] posX;
     private int[] posY;
-    private Image bomb = new ImageIcon(getClass().getResource("boom.png")).getImage();
+    private Image bomb;
     private JFrame frameCount = new JFrame();
+    private MeteorLogic[] meteorThread;
+    private JLabel[] lblMeteor;
 
     public boolean isReady = false;
 
     MeteorSystem(Display display) {
         this.display = display;
+
+        setFrameCount();
+    }
+
+    void setFrameCount() {
+        frameCount.setTitle("Meteor Count");
         JLabel lblCount = new JLabel("Meteor Count:");
         JTextField tfCount = new JTextField(25);
         JButton btnApply = new JButton("Apply");
         frameCount.setSize(400, 150);
         frameCount.setLayout(new FlowLayout());
         frameCount.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frameCount.setLocationRelativeTo(null);
 
         frameCount.add(lblCount);
         frameCount.add(tfCount);
@@ -31,52 +40,128 @@ public class MeteorSystem extends JLabel {
 
         frameCount.setVisible(!isReady);
         btnApply.addActionListener(e -> {
-            try {
-                n = Integer.parseInt(tfCount.getText());
-            } catch (Exception er) {
-                return;
-            }
-            meteor = new Image[n];
-            posX = new int[n];
-            posY = new int[n];
-
-            for (int i = 0; i < n; i++) {
-                posX[i] = rn.nextInt(0, 500);
-                posY[i] = rn.nextInt(0, 500);
-            }
-
-            loadMeteor();
-            loadBomb();
+            setMeteor(tfCount);
+            loadImage();
             isReady = !isReady;
+
+            for (MeteorLogic thread : meteorThread) {
+                thread.start();
+            }
 
             frameCount.setVisible(!isReady);
             display.setVisible(isReady);
         });
-
-        setOpaque(true);
-        bg = new ImageIcon(getClass().getResource("/Image/background.png")).getImage();
     }
 
-    public void loadMeteor() {
-        
-        for (int i = 0; i < meteor.length; i++) {
-            String path = "/Image/meteor" + rn.nextInt(1, 5) + ".png";
+    public void setMeteor(JTextField tfCount) {
+        try {
+            n = Integer.parseInt(tfCount.getText());
+        } catch (Exception er) {
+            return;
+        }
+
+        meteor = new Image[n];
+        posX = new int[n];
+        posY = new int[n];
+        lblMeteor = new JLabel[n];
+        meteorThread = new MeteorLogic[n];
+
+        for (int i = 0; i < n; i++) {
+            posX[i] = rn.nextInt(0, 515);
+            posY[i] = rn.nextInt(0, 500);
+            String path = "/Image/meteor" + rn.nextInt(1, 6) + ".png";
             meteor[i] = new ImageIcon(getClass().getResource(path)).getImage();
+            lblMeteor[i] = new JLabel();
+            meteorThread[i] = new MeteorLogic(this, i);
+            add(lblMeteor[i]);
         }
     }
 
-    public void loadBomb() {
+    public void loadImage() {
         bomb = new ImageIcon(getClass().getResource("/Image/boom.png")).getImage();
+        bg = new ImageIcon(getClass().getResource("/Image/background.png")).getImage();
     }
 
     @Override
     public void paintComponent(Graphics g) {
-        super.paintComponents(g);
+        super.paintComponent(g);
 
         g.drawImage(bg, 0, 0, 600, 600, this);
 
         for (int i = 0; i < meteor.length; i++) {
-            g.drawImage(meteor[i], posX[i], posY[i], 75, 75, this);
+            g.drawImage(meteor[i], posX[i], posY[i], 75, 75, lblMeteor[i]);
+        }
+    }
+
+    public JLabel[] getLblMeteor() {
+        return lblMeteor;
+    }
+
+    public int[] getPosX() {
+        return posX;
+    }
+
+    public int[] getPosY() {
+        return posY;
+    }
+}
+
+class MeteorLogic extends Thread {
+
+    private MeteorSystem meteor;
+    private int id;
+    private int dx;
+    private int dy;
+
+    private final int MAX_SPEED = 15;
+
+    Random rn = new Random();
+
+    public MeteorLogic(MeteorSystem meteor, int id) {
+        this.meteor = meteor;
+        this.id = id;
+
+        this.dx = rn.nextBoolean() ? rn.nextInt(0, 6) : -rn.nextInt(0, 6);
+        this.dy = rn.nextBoolean() ? rn.nextInt(0, 6) : -rn.nextInt(0, 6);
+    }
+
+    @Override
+    public void run() {
+        while (true) {
+            int cx = meteor.getPosX()[id];
+            int cy = meteor.getPosY()[id];
+
+            cx += dx;
+            cy += dy;
+
+            if(cx < 0) {
+                cx = 0;
+                dx = -dx;
+                dx += 1;
+            } else if (cx > 515) {
+                cx = 515;
+                dx = -dx;
+                dx -= 1;
+            }
+            if(cy < 0) {
+                cy = 0;
+                dy = -dy;
+                dy += 1;
+            } else if (cy > 500) {
+                cy = 500;
+                dy = -dy;
+                dy -= 1;
+            }
+
+            meteor.getPosX()[id] = cx;
+            meteor.getPosY()[id] = cy;
+
+            meteor.repaint();
+
+            try {
+                Thread.sleep(16);
+            } catch (Exception e) {
+            }
         }
     }
 }
