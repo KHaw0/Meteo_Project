@@ -113,8 +113,6 @@ class MeteorLogic extends Thread {
     private int dx;
     private int dy;
 
-    private final int MAX_SPEED = 15;
-
     Random rn = new Random();
 
     public MeteorLogic(MeteorSystem meteor, int id) {
