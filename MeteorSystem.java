@@ -1,4 +1,6 @@
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.*;
 import javax.swing.*;
 
@@ -15,6 +17,7 @@ public class MeteorSystem extends JPanel {
     private JFrame frameCount = new JFrame();
     private MeteorLogic[] meteorThread;
     private JLabel[] lblMeteor;
+    private boolean[] show;
 
     public boolean isReady = false;
 
@@ -38,6 +41,39 @@ public class MeteorSystem extends JPanel {
         frameCount.add(tfCount);
         frameCount.add(btnApply);
 
+        addMouseListener(new MouseListener() {
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                int x = e.getX();
+                int y = e.getY();
+
+                for (int i = 0; i < n; i++) {
+                    if (x >= posX[i] && x <= posX[i] + 50
+                            && y >= posY[i] && y <= posY[i] + 50) {
+                        meteor[i] = bomb;
+                    }
+                }
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+            }
+
+        });
+
         frameCount.setVisible(!isReady);
         btnApply.addActionListener(e -> {
             setMeteor(tfCount);
@@ -51,6 +87,7 @@ public class MeteorSystem extends JPanel {
             frameCount.setVisible(!isReady);
             display.setVisible(isReady);
         });
+
     }
 
     public void setMeteor(JTextField tfCount) {
@@ -65,10 +102,12 @@ public class MeteorSystem extends JPanel {
         posY = new int[n];
         lblMeteor = new JLabel[n];
         meteorThread = new MeteorLogic[n];
+        show = new boolean[n];
 
         for (int i = 0; i < n; i++) {
             posX[i] = rn.nextInt(0, 535);
             posY[i] = rn.nextInt(0, 520);
+            show[i] = true;
             String path = "/Image/meteor" + rn.nextInt(1, 6) + ".png";
             meteor[i] = new ImageIcon(getClass().getResource(path)).getImage();
             lblMeteor[i] = new JLabel();
@@ -89,7 +128,9 @@ public class MeteorSystem extends JPanel {
         g.drawImage(bg, 0, 0, 600, 600, this);
 
         for (int i = 0; i < meteor.length; i++) {
-            g.drawImage(meteor[i], posX[i], posY[i], 50, 50, lblMeteor[i]);
+            if (show[i]) {
+                g.drawImage(meteor[i], posX[i], posY[i], 50, 50, lblMeteor[i]);
+            }
         }
     }
 
@@ -104,6 +145,7 @@ public class MeteorSystem extends JPanel {
     public int[] getPosY() {
         return posY;
     }
+
 }
 
 class MeteorLogic extends Thread {
@@ -132,7 +174,7 @@ class MeteorLogic extends Thread {
             cx += dx;
             cy += dy;
 
-            if(cx < 0) {
+            if (cx < 0) {
                 cx = 0;
                 dx = -dx;
                 dx += 1;
@@ -141,7 +183,7 @@ class MeteorLogic extends Thread {
                 dx = -dx;
                 dx -= 1;
             }
-            if(cy < 0) {
+            if (cy < 0) {
                 cy = 0;
                 dy = -dy;
                 dy += 1;
